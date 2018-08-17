@@ -1,0 +1,20 @@
+body{
+    background: #070807;
+}
+.equipment{
+    outline-offset: 2px;
+    border: 1px solid #707070;
+    outline: 1px solid #707070;
+    padding: 2px;
+}
+.equipment > div > div{
+    border: 1px solid #0f0d0a;
+}
+.equipment > div > div:hover{
+    outline-offset: 2px;
+    border: 1px solid #707070;
+    outline: 1px solid #707070;
+}
+.gradient{
+    background: linear-gradient(to bottom, #000000 0%,#16232d 100%);
+}

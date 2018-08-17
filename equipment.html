@@ -1,0 +1,111 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Equipment</title>
+        
+        <script src="js/react.js"></script>
+        <script src="js/react_dom.js"></script>
+        <script src="js/babel.js"></script>
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+        
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div id="equipment" class="equipment mt-4"></div>
+            </div>
+        </div>
+    </body>
+    
+    <script type="text/babel">
+        
+        class Card extends React.Component {
+            state = {
+              plane: [],
+            }
+            constructor(props) {
+              super(props);
+              
+              var numrows = 36;
+              var cube = [];
+              
+                for (var i = 0; i < numrows; i++) {
+                    var number = Math.floor((Math.random() * 10) + 1);
+                    cube[i];
+                    
+                    if(number == 1){
+                        cube[i] = {'id': 'p-'+i, 'isset': 'true', 'class': 'd-flex align-items-center justify-content-center flex-row m-1 gradient'}
+                    }
+                    else{
+                        cube[i] = {'id': 'p-'+i, 'isset': false, 'class': 'd-flex align-items-center justify-content-center flex-row m-1'}
+                    }
+                }
+              this.state = ({ plane: cube });
+            }
+
+          dragStart = (event) => {
+              event.dataTransfer.setData("item", event.target.id);
+            }
+          allowDrop(ev) {
+                ev.preventDefault();
+          }  
+          drop = (event) => {
+              
+              var id = event.target.id;
+              if (id) {
+                  event.preventDefault();
+                  
+                  var data = event.dataTransfer.getData("item");
+                  var img = document.getElementById(id);
+                  var div = document.getElementById(data);
+                  var plane = this.state.plane;
+                  var newId = id.replace("p-", "");
+                  
+                  if(plane[newId].isset=='true'){
+                      return false;
+                  }
+                  
+                  console.log(plane[newId].isset);
+                  
+                  plane[data].isset = 'false';
+                  plane[data].class = 'd-flex align-items-center justify-content-center flex-row m-1';
+                  
+                  
+                  
+                  console.log('usuwam gradient: '+data);
+                  console.log('dodaję gradient '+id);
+                  
+                  plane[newId].isset = 'true';
+                  plane[newId].class = 'd-flex align-items-center justify-content-center flex-row m-1 gradient';
+                  
+                  this.setState({ 
+                     plane: plane
+                  })
+
+//                  var element = document. getElementById(data);
+//                  element. parentNode. removeChild(element);
+                  
+//                  event.target.appendChild(document.getElementById(data));
+              }
+            }
+          render(){
+              var rows = [];
+                for (var i = 0; i < this.state.plane.length; i++) {
+
+                    var style = {width:'80px', height:'80px', float:'left'};
+                    if(this.state.plane[i].isset == 'true'){
+                        rows.push(<div style={style} className ={this.state.plane[i].class} id={this.state.plane[i].id} onDrop={this.drop} onDragOver={this.allowDrop}><img src="potion.png" id={i} draggable="true" onDrop={this.drop} data-test="hej" onDragStart={this.dragStart} alt="" /></div>);
+                    }else{
+                        rows.push(<div style={style} className ={this.state.plane[i].class} id={this.state.plane[i].id} onDrop={this.drop} onDragOver={this.allowDrop}></div>);
+                    }
+                    
+                }
+              return (<div className="d-flex flex-wrap justify-content-between">{rows}</div>)
+            }
+
+          }
+        ReactDOM.render(<Card />,document.getElementById('equipment'));  
+    </script>
+</html>
